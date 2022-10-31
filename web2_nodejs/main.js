@@ -4,6 +4,7 @@ var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
+var sanitizeHTML = require('sanitize-html');
 
 var app = http.createServer(function (request, response) {
     var _url = request.url;
@@ -25,12 +26,16 @@ var app = http.createServer(function (request, response) {
                 var filteredId = path.parse(queryData.id).base;
                 fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
                     var title = queryData.id;
+                    var sanitizedTitle = sanitizeHTML(title);
+                    var sanitizedDescription = sanitizeHTML(description, {
+                        allowedTags: ['h1']
+                    });
                     var list = template.list(filelist);
-                    var html = template.HTML(title, list, `<h2>${title}</h2>${description}`,
+                    var html = template.HTML(title, list, `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
                         `<a href="/create">create</a>
-                        <a href="/update?id=${title}">update</a>
+                        <a href="/update?id=${sanitizedTitle}">update</a>
                         <form action="delete_process" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
-                            <input type="hidden" name="id" value="${title}">
+                            <input type="hidden" name="id" value="${sanitizedTitle}">
                             <input type="submit" value="delete">
                         </form>`
                     );
