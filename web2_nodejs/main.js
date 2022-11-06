@@ -1,10 +1,7 @@
 var http = require('http');
-var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js');
-var path = require('path');
-var sanitizeHTML = require('sanitize-html');
 var mysql = require('mysql2');
 
 var db = mysql.createConnection({
