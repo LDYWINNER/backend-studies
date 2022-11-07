@@ -144,60 +144,58 @@
 // });
 // app.listen(3001);
 
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const sanitizeHtml = require('sanitize-html');
-const bodyParser = require('body-parser');
-const compression = require('compression');
-const template = require('./lib/template');
-const app = express();
+var express = require('express');
+var app = express();
+var fs = require('fs');
+var template = require('./lib/template.js');
+var path = require('path');
+var sanitizeHtml = require('sanitize-html');
+var qs = require('querystring');
+var bodyParser = require('body-parser');
+var compression = require('compression');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(function (request, response, next) {
+app.use(compression());
+app.get('*', function (request, response, next) {
     fs.readdir('./data', function (error, filelist) {
         request.list = filelist;
         next();
     });
 });
-app.use(compression());
-
-app.get('/', (req, res) => {
+app.get('/', function (request, response) {
     var title = 'Welcome';
     var description = 'Hello, Node.js';
-    var list = template.list(req.list);
+    var list = template.list(request.list);
     var html = template.HTML(title, list,
-        `<h2>${title}</h2><p>${description}</p>`,
+        `<h2>${title}</h2>${description}`,
         `<a href="/create">create</a>`
     );
-    res.send(html);
+    response.send(html);
 });
-
-app.get('/page/:pageId', (req, res) => {
-    var filteredId = path.parse(req.params.pageId).base;
+app.get('/page/:pageId', function (request, response) {
+    var filteredId = path.parse(request.params.pageId).base;
     fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
-        var title = req.params.pageId;
+        var title = request.params.pageId;
         var sanitizedTitle = sanitizeHtml(title);
         var sanitizedDescription = sanitizeHtml(description, {
             allowedTags: ['h1']
         });
-        var list = template.list(req.list);
+        var list = template.list(request.list);
         var html = template.HTML(sanitizedTitle, list,
-            `<h2>${sanitizedTitle}</h2><p>${sanitizedDescription}</p>`,
-            `<a href="/create">create</a>
+            `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+            ` <a href="/create">create</a>
                 <a href="/update/${sanitizedTitle}">update</a>
                 <form action="/delete_process" method="post">
                     <input type="hidden" name="id" value="${sanitizedTitle}">
                     <input type="submit" value="delete">
                 </form>`
         );
-        res.send(html);
+        response.send(html);
     });
 });
-
-app.get('/create', (req, res) => {
+app.get('/create', function (request, response) {
     var title = 'WEB - create';
-    var list = template.list(req.list);
+    var list = template.list(request.list);
     var html = template.HTML(title, list, `
         <form action="/create_process" method="post">
             <p><input type="text" name="title" placeholder="title"></p>
@@ -209,64 +207,62 @@ app.get('/create', (req, res) => {
             </p>
         </form>
     `, '');
-    res.send(html);
+    response.send(html);
 });
-
-app.post('/create_process', (req, res) => {
-    var post = req.body;
+app.post('/create_process', function (request, response) {
+    var post = request.body;
     var title = post.title;
     var description = post.description;
     fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
-        res.writeHead(302, { Location: `/?id=${title}` });
-        res.end();
+        response.writeHead(302, { Location: `/?id=${title}` });
+        response.end();
     });
-
 });
-
-app.get('/update/:pageId', (req, res) => {
-    var filteredId = path.parse(req.params.pageId).base;
+app.get('/update/:pageId', function (request, response) {
+    var filteredId = path.parse(request.params.pageId).base;
     fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
-        var title = req.params.pageId;
-        var list = template.list(req.list);
+        var title = request.params.pageId;
+        var list = template.list(request.list);
         var html = template.HTML(title, list,
             `
             <form action="/update_process" method="post">
                 <input type="hidden" name="id" value="${title}">
                 <p><input type="text" name="title" placeholder="title" value="${title}"></p>
                 <p>
-                    <textarea name="description" placeholder="description">${description}</textarea>
+                    <textarea name="description"
+                        placeholder="description">${description}</textarea>
                 </p>
                 <p>
                     <input type="submit">
                 </p>
             </form>
             `,
-            `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+            `<a href="/create">create</a> <a href="/update/${title}">update</a>`
         );
-        res.writeHead(200);
-        res.end(html);
+        response.send(html);
     });
 });
-
-app.post('/update_process', (req, res) => {
-    var post = req.body;
+app.post('/update_process', function (request, response) {
+    var post = request.body;
     var id = post.id;
     var title = post.title;
     var description = post.description;
     fs.rename(`data/${id}`, `data/${title}`, function (error) {
         fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
-            res.redirect(`/?id=${title}`);
+            response.redirect(`/?id=${title}`);
+            response.end();
         });
     });
 });
-
-app.post('/delete_process', (req, res) => {
-    var post = req.body;
+app.post('/delete_process', function (request, response) {
+    var post = request.body;
     var id = post.id;
     var filteredId = path.parse(id).base;
     fs.unlink(`data/${filteredId}`, function (error) {
-        res.redirect('/');
+        response.redirect('/');
     });
 });
 
-app.listen(3003, () => console.log('Example app listening on port 3003!'));
+app.listen(3003, function () {
+    console.log('Example app listening on port 3000!')
+});
