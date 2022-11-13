@@ -9,6 +9,7 @@ var db = mysql.createConnection({
     user: 'root',
     password: 'dannie1102*',
     database: 'opentutorials',
+    port: '3000'
 });
 
 db.connect();
