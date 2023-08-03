@@ -1,2 +1,2 @@
 # backend-studies
-personal backend studies
+backend studies
