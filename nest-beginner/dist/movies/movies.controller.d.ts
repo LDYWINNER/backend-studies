@@ -1,7 +1,8 @@
 export declare class MoviesController {
     getAll(): string;
+    search(seachingYear: string): string;
     getOne(movieId: string): string;
-    create(): string;
+    create(movieData: any): any;
     remove(movieId: string): string;
-    patch(movieId: string): string;
+    patch(movieId: string, updateData: any): any;
 }
