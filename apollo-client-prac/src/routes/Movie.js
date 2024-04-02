@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const GET_MOVIE = gql`
-  query getMovie($movieId: ID!) {
+  query getMovie($movieId: String!) {
     movie(id: $movieId) {
       id
       title
