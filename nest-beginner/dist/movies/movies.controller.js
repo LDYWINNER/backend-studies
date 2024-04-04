@@ -33,10 +33,7 @@ let MoviesController = class MoviesController {
         return this.moviesService.deleteOne(movieId);
     }
     patch(movieId, updateData) {
-        return {
-            updatedMovie: movieId,
-            ...updateData,
-        };
+        return this.moviesService.update(movieId, updateData);
     }
 };
 exports.MoviesController = MoviesController;

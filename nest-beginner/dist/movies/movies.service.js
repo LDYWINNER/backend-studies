@@ -16,17 +16,26 @@ let MoviesService = class MoviesService {
         return this.movies;
     }
     getOne(id) {
-        return this.movies.find((movie) => movie.id === +id);
+        const movie = this.movies.find((movie) => movie.id === +id);
+        if (!movie) {
+            throw new common_1.NotFoundException(`Movie with ID ${id} not found.`);
+        }
+        return movie;
     }
     deleteOne(id) {
-        this.movies.filter((movie) => movie.id !== +id);
-        return true;
+        this.getOne(id);
+        this.movies = this.movies.filter((movie) => movie.id !== +id);
     }
     create(movieData) {
         this.movies.push({
             id: this.movies.length + 1,
             ...movieData,
         });
+    }
+    update(id, updateData) {
+        const movie = this.getOne(id);
+        this.deleteOne(id);
+        this.movies.push({ ...movie, ...updateData });
     }
 };
 exports.MoviesService = MoviesService;

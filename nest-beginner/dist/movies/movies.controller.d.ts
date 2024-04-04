@@ -6,6 +6,6 @@ export declare class MoviesController {
     getAll(): Movie[];
     getOne(movieId: string): Movie;
     create(movieData: any): void;
-    remove(movieId: string): boolean;
-    patch(movieId: string, updateData: any): any;
+    remove(movieId: string): void;
+    patch(movieId: string, updateData: any): void;
 }
