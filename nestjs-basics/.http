@@ -1,0 +1,91 @@
+
+# 게시글 전체 가져오기
+GET http://localhost:3000/board
+
+###
+
+# 게시글 하나 가져오기
+GET http://localhost:3000/board/16
+
+###
+
+# 게시글 생성
+POST http://localhost:3000/board
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJmYXN0Y2FtcHVzMjAyNCIsIm5hbWUiOiJmYXN0Y2FtcHVzbmFtZTIiLCJpYXQiOjE2OTA3Mjk2ODIsImV4cCI6MTY5MDczMzI4Mn0.zZ46zzi_UeOrYxPp6nCqi-7QyGBUsiOPqOzQSI3LuKk
+
+{
+    "contents": "새로운 게시글"
+}
+
+###
+
+# 게시글 수정
+PUT http://localhost:3000/board/16
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJmYXN0Y2FtcHVzMjAyNCIsIm5hbWUiOiJmYXN0Y2FtcHVzbmFtZTIiLCJpYXQiOjE2OTA3MTI5NTcsImV4cCI6MTY5MDcxNjU1N30.typANtJn7mCfqCBsKueyH6AwxNr7NdhsYtfjOx6AbVg
+
+{
+    "contents": "FastCampus New world"
+}
+
+###
+
+# 게시글 삭제
+
+DELETE http://localhost:3000/board/16
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJmYXN0Y2FtcHVzMjAyNCIsIm5hbWUiOiJmYXN0Y2FtcHVzbmFtZTIiLCJpYXQiOjE2OTA3MTI5NTcsImV4cCI6MTY5MDcxNjU1N30.typANtJn7mCfqCBsKueyH6AwxNr7NdhsYtfjOx6AbVg
+
+###
+GET http://localhost:3000
+
+
+###
+
+# 유저 리스트 가져오기
+
+GET http://localhost:3000/user
+
+###
+
+# 유저 회원가입
+
+POST http://localhost:3000/user
+content-type: application/json
+
+{
+    "username": "fastcampus2024",
+    "name": "fastcampusname2",
+    "password": "fastcampuspassword"
+}
+
+###
+
+# 유저 로그인
+
+POST http://localhost:3000/user/login
+content-type: application/json
+
+{
+    "username": "fastcampus2024",
+    "password": "fastcampuspassword"
+}
+
+###
+
+# 유저 로그인 (passport)
+
+POST http://localhost:3000/login
+content-type: application/json
+
+{
+    "username": "fastcampus2024",
+    "password": "fastcampuspassword"
+}
+
+###
+
+# 유저 ME
+GET http://localhost:3000/me
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJmYXN0Y2FtcHVzMjAyNCIsIm5hbWUiOiJmYXN0Y2FtcHVzbmFtZTIiLCJpYXQiOjE2OTA3MDczNjMsImV4cCI6MTY5MDcxMDk2M30.F0wRfPGNoYaqOm0IYNFSeHXY5gRRe4hMxQfaRDinuV0
