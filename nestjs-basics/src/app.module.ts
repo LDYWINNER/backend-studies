@@ -8,7 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './routes/user/user.module';
 import { AuthModule } from './auth/auth.module';
 
-
 @Module({
   imports: [
     ConfigModule(),
@@ -21,11 +20,11 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
-      logging: true
+      logging: true,
     }),
     BoardModule,
     UserModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

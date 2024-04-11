@@ -46,9 +46,9 @@ describe('BoardService', () => {
           id: 1,
           username: 'fakeuser',
           password: 'pw',
-          name: 'fastcampus'
+          name: 'fastcampus',
         },
-        contents: '게시글'
+        contents: '게시글',
       } as Board);
       const board = await boardService.getBoardById(2);
 

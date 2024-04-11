@@ -13,9 +13,7 @@ export class UserController {
   }
 
   @Post('login')
-  login(
-    @Body(new ValidationPipe()) data: LoginUserDto
-  ) {
+  login(@Body(new ValidationPipe()) data: LoginUserDto) {
     return this.userService.login(data);
   }
 

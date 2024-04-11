@@ -18,5 +18,4 @@ export class CreateBoardDto {
     example: '안녕하세요',
   })
   contents: string;
-
 }

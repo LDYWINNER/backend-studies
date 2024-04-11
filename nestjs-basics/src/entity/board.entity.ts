@@ -34,6 +34,6 @@ export class Board {
 
   @ApiProperty({ description: '유저정보' })
   @ManyToOne(() => User)
-  @JoinColumn({name: 'userId'})
+  @JoinColumn({ name: 'userId' })
   user: User;
 }
