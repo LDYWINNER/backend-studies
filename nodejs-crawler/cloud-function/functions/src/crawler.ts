@@ -41,11 +41,12 @@ export default class Crawler {
 
     for (const result of keywordResults) {
       const _article = await this.scraping(page, result.keyword);
+      console.log(_article);
       const mergeKeyword = _article.map((ar) => ({
         ...ar,
         keyword: result.keyword,
       }));
-      
+
       articles.push(...mergeKeyword);
     }
 
